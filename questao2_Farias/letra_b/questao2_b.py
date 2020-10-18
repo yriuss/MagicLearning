@@ -16,17 +16,13 @@ class KMeans():
 
         # list of sample indices for each cluster
         self.clusters = [[] for _ in range(self.K)]
-        # the centers (mean feature vector) for each cluster
-        self.centroids = []
+        # initial centroids
+        self.centroids = [[14.75,1.73,2.39,11.4,91,3.1,3.69,.43,2.81,5.4,1.25,2.73,1150], [12.7,3.87,2.4,23,101,2.83,2.55,.43,1.95,2.57,1.19,3.13,463],\
+                          [13.73,4.36,2.26,22.5,88,1.28,.47,.52,1.15,6.62,.78,1.75,520]]
 
     def predict(self, X):
         self.X = X
         self.n_samples, self.n_features = X.shape
-        
-        # initialize 
-        #random_sample_idxs = np.random.choice(self.n_samples, self.K, replace=False)
-        self.centroids = [[4.9,3.0,1.4,0.2], [5.1,3.5,1.4,0.2],\
-                          [4.7,3.2,1.3,0.2]]
 
         # Optimize clusters
         for _ in range(self.max_iters):
@@ -98,11 +94,12 @@ X = np.array(df)
 k = KMeans(K=3, max_iters=150, plot_steps=True)
 y_pred = k.predict(X)
 '''
-df = pd.read_csv("iris.csv")
+df = pd.read_csv("wine.csv")
 
 X = np.array(df.drop('target', axis = 1))
 clusters = 3
-k = KMeans(K=clusters, max_iters=150, plot_steps=True)
+k = KMeans(K=clusters, max_iters=50, plot_steps=True)
+print("Os centroids são inicializados em: "+str(k.centroids))
 y_pred = k.predict(X)
 sb.pairplot(df, hue = "target")
 
@@ -110,49 +107,53 @@ df_new = df.drop('target', axis = 1)
 
 y_pred_list = y_pred.tolist()
 
-setosa_error = 0
-versicolor_error = 0
-virginica_error = 0
+one_error = 0
+two_error = 0
+three_error = 0
 
-setosa_total = 0
-versicolor_total = 0
-virginica_total = 0
+one_total = 0
+two_total = 0
+three_total = 0
 target_df = df['target'].tolist()
+
 for idx,element in enumerate(y_pred_list):
-    if (y_pred_list[idx] == 0):
-        y_pred_list[idx] = 'versicolor'
+    if (y_pred_list[idx] == 1):
+        y_pred_list[idx] = '2'
         
-    elif(y_pred_list[idx] == 1):
-        y_pred_list[idx] = 'virginica'
+    elif(y_pred_list[idx] == 2):
+        y_pred_list[idx] = '3'
     else:
-        y_pred_list[idx] = 'setosa'
-        
-    if(target_df[idx] == 'setosa'):
-        setosa_total = setosa_total + 1
-        if(y_pred_list[idx] != 'setosa'):
-            setosa_error = setosa_error + 1
+        y_pred_list[idx] = '1'
+    if(target_df[idx] == 1):
+        one_total = one_total + 1
+        if(y_pred_list[idx] != '1'):
+            one_error = one_error + 1
     
-    if(target_df[idx] == 'virginica'):
-        virginica_total = virginica_total + 1
-        if(y_pred_list[idx] != 'virginica'):
-            virginica_error = virginica_error + 1
+    if(target_df[idx] == 3):
+        three_total = three_total + 1
+        if(y_pred_list[idx] != '3'):
+            three_error = three_error + 1
     
-    if(target_df[idx] == 'versicolor'):
-        versicolor_total = versicolor_total + 1
-        if(y_pred_list[idx] != 'versicolor'):
-            versicolor_error = versicolor_error + 1
+    if(target_df[idx] == 2):
+        two_total = two_total + 1
+        if(y_pred_list[idx] != '2'):
+            two_error = two_error + 1
 
 
 df_new['target'] = y_pred_list
 
-sb.pairplot(df_new, hue = "target", hue_order= ['setosa','versicolor', 'virginica'])
+sb.pairplot(df_new, hue = "target", hue_order= ['1','2', '3'])
 
-print("O acerto percentual da setosa é: ", 100*(1-setosa_error/setosa_total),'%\n')
+print("O acerto percentual de 1 é: ", 100*(1-one_error/one_total),'%\n')
 
-print("O acerto percentual da virginica é: ",\
-      100*(1-virginica_error/virginica_total), '%\n')
+print("O acerto percentual de 2 é: ",\
+      100*(1-two_error/two_total), '%\n')
 
-print("O acerto percentual da versicolor é: ",\
-      100*(1-versicolor_error/versicolor_total), '%\n')
+print("O acerto percentual de 3 é: ",\
+      100*(1-three_error/three_total), '%\n')
 
-#plt.show()
+print("Os centroids convergidos são: "+str(k.centroids))
+
+
+
+plt.show()
