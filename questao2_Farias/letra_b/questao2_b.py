@@ -44,7 +44,6 @@ class KMeans():
 
 
     def _get_cluster_labels(self, clusters):
-        # each sample will get the label of the cluster it was assigned to
         labels = np.empty(self.n_samples)
 
         for cluster_idx, cluster in enumerate(clusters):
@@ -53,7 +52,6 @@ class KMeans():
         return labels
 
     def _create_clusters(self, centroids):
-        # Assign the samples to the closest centroids to create clusters
         clusters = [[] for _ in range(self.K)]
         for idx, sample in enumerate(self.X):
             centroid_idx = self._closest_centroid(sample, centroids)
@@ -61,13 +59,11 @@ class KMeans():
         return clusters
 
     def _closest_centroid(self, sample, centroids):
-        # distance of the current sample to each centroid
         distances = [euclidean_distance(sample, point) for point in centroids]
         closest_index = np.argmin(distances)
         return closest_index
 
     def _get_centroids(self, clusters):
-        # assign mean value of clusters to centroids
         centroids = np.zeros((self.K, self.n_features))
         for cluster_idx, cluster in enumerate(clusters):
             cluster_mean = np.mean(self.X[cluster], axis=0)
@@ -75,7 +71,6 @@ class KMeans():
         return centroids
 
     def _is_converged(self, centroids_old, centroids):
-        # distances between each old and new centroids, fol all centroids
         distances = [euclidean_distance(centroids_old[i], centroids[i]) for i in range(self.K)]
         return sum(distances) == 0
 '''           
