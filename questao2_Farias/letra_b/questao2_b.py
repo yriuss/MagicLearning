@@ -14,9 +14,8 @@ class KMeans():
         self.max_iters = max_iters
         self.plot_steps = plot_steps
 
-        # list of sample indices for each cluster
         self.clusters = [[] for _ in range(self.K)]
-        # initial centroids
+
         self.centroids = [[14.75,1.73,2.39,11.4,91,3.1,3.69,.43,2.81,5.4,1.25,2.73,1150], [12.7,3.87,2.4,23,101,2.83,2.55,.43,1.95,2.57,1.19,3.13,463],\
                           [13.73,4.36,2.26,22.5,88,1.28,.47,.52,1.15,6.62,.78,1.75,520]]
 
@@ -24,21 +23,17 @@ class KMeans():
         self.X = X
         self.n_samples, self.n_features = X.shape
 
-        # Optimize clusters
+
         for _ in range(self.max_iters):
-            # Assign samples to closest centroids (create clusters)
             self.clusters = self._create_clusters(self.centroids)
             
 
-            # Calculate new centroids from the clusters
             centroids_old = self.centroids
             self.centroids = self._get_centroids(self.clusters)
             
-            # check if clusters have changed
             if self._is_converged(centroids_old, self.centroids):
                 break
 
-        # Classify samples as the index of their clusters
         
         return self._get_cluster_labels(self.clusters)
 
