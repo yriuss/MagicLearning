@@ -31,11 +31,11 @@ class KMeans():
             centroids_old = self.centroids
             self.centroids = self._get_centroids(self.clusters)
             
+            # check if clusters have changed
             if self._is_converged(centroids_old, self.centroids):
                 break
 
-        
-        return self._get_cluster_labels(self.clusters)
+       return self._get_cluster_labels(self.clusters)
 
 
     def _get_cluster_labels(self, clusters):
@@ -143,6 +143,7 @@ print("O acerto percentual de 3 é: ",\
       100*(1-three_error/three_total), '%\n')
 
 print("Os centroids convergidos são: "+str(k.centroids))
+
 
 
 plt.show()

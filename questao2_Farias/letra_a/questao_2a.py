@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
+import matplotlib.pyplot as plt
 
 def euclidean_distance(x1, x2):
         return np.sqrt(np.sum((x1 - x2)**2))
@@ -35,8 +35,8 @@ target_df = np.array(df['target'])
 y = target_df
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1234)
-
-knn = KNN(3)
+"""
+knn = KNN(12)
 
 knn.fit(X_train, y_train)
 
@@ -46,3 +46,20 @@ pred = knn.predict(X_test)
 
 acc = np.sum((pred == y_test) / len(y_test))
 print("A acurácia é de: " + str(acc*100)+"%")
+"""
+acc_list = []
+for i in range(50):
+    k = i+1
+    knn = KNN(k)
+    
+    knn.fit(X_train, y_train)
+    
+    pred = knn.predict(X_test)
+    
+    
+    
+    acc = np.sum((pred == y_test) / len(y_test))
+    acc_list.append(acc)
+#print("A acurácia é de: " + str(acc*100)+"%")
+plt.plot(acc_list)
+plt.show()
