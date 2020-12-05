@@ -45,4 +45,4 @@ pred = knn.predict(X_test)
 
 
 acc = np.sum((pred == y_test) / len(y_test))
-print("A acurácia é de: " + str(acc)+"%")
+print("A acurácia é de: " + str(acc*100)+"%")
