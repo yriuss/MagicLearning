@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr  4 14:57:57 2021
+
+@author: adriel
+"""
+
+
+import cv2
+from matplotlib import pyplot as plt
+
+img = cv2.imread("images/globo.tif")
+
+print(img)
